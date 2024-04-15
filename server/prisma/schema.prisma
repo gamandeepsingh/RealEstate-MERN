@@ -13,12 +13,12 @@ model User {
     email            String      @unique
     image            String?
     bookedVisits     Json[]
-    favResidenciesiD String[]    @db.ObjectId
-    ownResidencies   Residency[] @relation("Owner")
+    favResidenciesID String[]    @db.ObjectId
+    ownedResidencies Residency[] @relation("Owner")
 }
 
 model Residency {
-    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
     title       String
     description String
     price       Int
@@ -28,7 +28,11 @@ model Residency {
     image       String
     facilities  Json
     userEmail   String
-    owner       User   @relation("Owner", fields: [userEmail], references: [email])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    owner       User     @relation("Owner", fields: [userEmail], references: [email])
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    @@unique(fields: [address, userEmail])
 }
+
+// npx prisma db push
+// npx prisma generate
