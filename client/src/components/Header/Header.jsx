@@ -3,8 +3,12 @@ import "./Header.css";
 import { BiMenuAltRight } from "react-icons/bi";
 import OutsideClickHandler from "react-outside-click-handler";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false);
+  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
+
   const toggleMenu = () => {
     setMenuOpened(!menuOpened);
   };
@@ -31,7 +35,18 @@ const Header = () => {
             <a href="mailto:gamandeepsingh4gmail.com">Contact</a>
 
             {/* login Button */}
-            <button className="button">Login</button>
+            {!isAuthenticated ? (
+              <button className="button" onClick={loginWithRedirect}>
+                Login
+              </button>
+            ) : (
+              <div>
+                <p>User Profile</p>
+                <button className="button" onClick={logout}>
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </OutsideClickHandler>
 
